@@ -1,0 +1,54 @@
+{
+  "name": "wechat-moments-screenshot",
+  "version": "1.1.0",
+  "description": "一个简单易用的微信朋友圈截图生成工具，可以自定义各种朋友圈元素，生成逼真的朋友圈截图。",
+  "main": "index.html",
+  "keywords": [
+    "wechat",
+    "moment",
+    "screenshot",
+    "generator",
+    "朋友圈",
+    "截图",
+    "生成器"
+  ],
+  "author": "AI Assistant",
+  "license": "MIT",
+  "homepage": "https://github.com/tstin30/WechatMomentsScreenShot#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tstin30/WechatMomentsScreenShot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tstin30/WechatMomentsScreenShot/issues"
+  },
+  "scripts": {
+    "serve": "python -m http.server 8000",
+    "serve-node": "npx http-server -p 8000 --cors",
+    "start": "open index.html"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "files": [
+    "index.html",
+    "style.css",
+    "script.js",
+    "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "package.json",
+    "avatar/",
+    "static/",
+    "docs/"
+  ]
+}

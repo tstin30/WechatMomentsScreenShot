@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信朋友圈截图生成器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧配置面板 -->
+        <div class="config-panel">
+            <h2>配置朋友圈信息</h2>
+            
+            <div class="form-row">
+                <div class="form-group two-thirds">
+                    <label>用户名</label>
+                    <input type="text" id="username" value="佚名" placeholder="请输入用户名">
+                </div>
+                <div class="form-group one-third">
+                    <label>头像</label>
+                    <div class="avatar-upload">
+                        <input type="file" id="avatarInput" accept="image/*">
+                        <label for="avatarInput" class="avatar-preview-wrapper">
+                            <img id="avatarPreview" src="" alt="点击选择头像">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>正文内容</label>
+                <textarea id="content" rows="4" placeholder="请输入朋友圈内容">美好的午后怎可被牛马生活束缚</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>朋友圈图片</label>
+                <div class="image-upload">
+                    <input type="file" id="momentImageInput" accept="image/*" multiple>
+                    <label for="momentImageInput" class="upload-btn">选择图片（可多选）</label>
+                    <div id="momentImagesPreview" class="images-preview"></div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>定位信息</label>
+                    <input type="text" id="location" value="" placeholder="定位（选填）">
+                </div>
+                <div class="form-group half">
+                    <label>发表时间</label>
+                    <input type="text" id="postTime" value="26 分钟前" placeholder="例：26 分钟前">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>显示选项</label>
+                <div class="display-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showStatusBar" checked>
+                        <span>显示状态栏</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="showNavBar" checked>
+                        <span>显示导航栏</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>点赞数</label>
+                    <input type="number" id="likeCount" value="4" min="0" max="100" placeholder="0-100">
+                </div>
+                <div class="form-group half">
+                    <label>点赞显示方式</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="likeDisplayMode" value="avatar" checked>
+                            <span>显示头像</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="likeDisplayMode" value="name">
+                            <span>显示名称</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>评论区</label>
+                <div class="comments-config">
+                    <div id="commentsList"></div>
+                    <button class="add-btn" onclick="addComment()">+ 添加评论</button>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="export-btn" onclick="exportScreenshot()">导出截图</button>
+            </div>
+        </div>
+
+        <!-- 右侧预览面板 -->
+        <div class="preview-panel">
+            <h2>预览效果</h2>
+            <div class="phone-mockup">
+                <!-- 手机顶部状态栏 -->
+                <div class="status-bar">
+                    <span class="time" id="statusBarTime">09:40</span>
+                    <span class="signal">
+                        <img class="cellular" src="static/signal.png" alt="信号">
+                        <img class="wifi" src="static/wifi.png" alt="WiFi">
+                        <img class="battery" src="static/battery.png" alt="电量">
+                    </span>
+                </div>
+
+                <!-- 导航栏 -->
+                <div class="nav-bar">
+                    <img class="back-btn" src="static/back.png" alt="返回">
+                    <span class="title">详情</span>
+                    <div class="more-btn">⋯</div>
+                </div>
+
+                <!-- 朋友圈内容 -->
+                <div id="momentContent" class="moment-content">
+                    <div class="moment-header">
+                        <img class="avatar" id="previewAvatar" src="" alt="头像">
+                        <div class="user-info">
+                            <div class="username" id="previewUsername">佚名</div>
+                            <div class="content-text" id="previewContent">美好的午后怎可被牛马生活束缚</div>
+                        </div>
+                    </div>
+
+                    <div class="moment-images" id="previewImages"></div>
+
+                    <div class="moment-footer">
+                        <div class="post-time">
+                            <span id="previewTime">26 分钟前</span>
+                            <span id="previewLocation" class="location-text"></span>
+                            <img class="delete-btn" src="static/delete.png" alt="删除">
+                        </div>
+                    </div>
+
+                    <div class="interaction-section" id="interactionSection">
+                        <div class="likes-section" id="likesSection">
+                            <img class="like-icon" src="static/heart.png" alt="点赞">
+                            <div class="likes-list" id="likesList"></div>
+                        </div>
+                        
+                        <div class="comments-section" id="commentsSection"></div>
+                    </div>
+
+                    <!-- 底部评论框 -->
+                    <div class="comment-input-bar">
+                        <input type="text" placeholder="发表评论:" readonly>
+                        <img class="emoji-btn" src="static/emoji.png" alt="表情">
+                        <img class="image-btn" src="static/image.png" alt="图片">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
